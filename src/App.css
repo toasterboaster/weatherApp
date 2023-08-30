@@ -24,3 +24,7 @@ main {
 .add-card {
   
 }
+
+.trashButton {
+  cursor: pointer;
+}

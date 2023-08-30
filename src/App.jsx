@@ -3,23 +3,35 @@ import './App.css'
 import Start from './components/Start.jsx'
 import Card from './components/Card.jsx'
 import City from './components/City.jsx'
+import { TrashFill } from 'react-bootstrap-icons';
+
 
 
 export default function App() {
   const [start, setStart] = React.useState(false)
   const [cityCard, setCityCard] = React.useState(false);
-  const [data, setData] = React.useState([]);
+  const [data, setData] = React.useState(JSON.parse(localStorage.getItem('data')) || []);
   const [inputValue, setInputValue] = React.useState('');
+  const [selectedCity, setSelectedCity] = React.useState(0)
+
+React.useEffect(() => {
+    if (data.length > 0) {
+      setStart(true);
+    }
+  }, [data]);
 
   const fetchData = (zip) => {
     fetch(`https://api.weatherapi.com/v1/current.json?key=c50302f0df1c4366907192905232408&q=${zip}`)
       .then(response => response.json())
       .then((newData) => {
-        console.log(data)
         setData(prevData => [...prevData, newData])
       })
       .catch(error => console.error(error));
   };
+
+  React.useEffect(() => {
+    localStorage.setItem('data', JSON.stringify(data))
+  }, [data])
 
 
   function startApp() {
@@ -27,8 +39,9 @@ export default function App() {
     fetchData(inputValue)
   }
 
-  function selectCityCard() {
+  function selectCityCard(index) {
     setCityCard(prev => !prev)
+    setSelectedCity(index)
   }
 
   const handleInputChange = (e) => {
@@ -40,15 +53,15 @@ export default function App() {
     fetchData(inputValue)
   }
   
-  console.log(data)
 
-  let cityCardArray = data.map((city,index) => {
+  let cityCardArray = data.map((city, index) => {
     return (
       <Card
             cityName={city.location.name}
             cityTemp={city.current.temp_f}
             cityCondition={city.current.condition.text}
-            city={selectCityCard} 
+            key={index}
+            city={() => selectCityCard(index)}
             />
     )
   })
@@ -67,7 +80,7 @@ export default function App() {
       }
       {cityCard && <City
         goBack={selectCityCard}
-        //cityName={data[0].location.name} 
+        cityName={data[selectedCity].location.name} 
                      />}
     </main>
   )
