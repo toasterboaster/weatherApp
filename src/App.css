@@ -1,6 +1,19 @@
 main {
   text-align: center;
   vertical-align: center;
+  position: relative;
+}
+
+.start--container {
+  display: flex;
+  justify-content: center;
+  height: 100vh; 
+  position: relative;
+}
+
+.start {
+  position: absolute;
+  top: 33%;
 }
 
 .city--card--container {
