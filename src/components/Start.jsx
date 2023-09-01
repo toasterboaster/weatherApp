@@ -8,7 +8,7 @@ const handleInputChange = (e) => {
 }*/
   
   return (
-    <div>
+    <div className={props.className}>
       <h1>Title</h1>
       <form>
         <input placeholder="Enter city or zipcode" type="text" onChange={props.handleInputChange}></input>

@@ -82,7 +82,9 @@ React.useEffect(() => {
     
   return (
     <main>
-      {!start && <Start start={startApp} inputValue={inputValue} handleInputChange={handleInputChange} />}
+      <div className='start--container'>
+      {!start && <Start className="start" start={startApp} inputValue={inputValue} handleInputChange={handleInputChange} />}
+        </div>
       {start && !cityCard && data &&
         <div className='menu--container'>
           {cityCardArray}
