@@ -35,10 +35,14 @@ export default function App() {
       .catch(error => console.error(error));
   };
 
-  /*Does this bit of code uddate the state?
+  
+  //Does this bit of code uddate the state?
+  /*
    React.useEffect(() => {
-   if (inputValue){
-      fetchData(inputValue);
+   if (data.length > 0){
+   for (let i = 0; i < data.length; i++){
+      fetchData(data[i].inputValue);
+      }
     }}, []);
   */
 
@@ -69,7 +73,14 @@ export default function App() {
   }
 
   function addAnotherCity() {
-    fetchData(inputValue)
+    if (!inputValue) {
+      alert('please enter a zipcode');
+      event.preventDefault();
+    } else {
+      setStart(prev => !prev)
+      fetchData(inputValue)
+    }
+    setInputValue('')
   }
 
   function deleteCard(event, id) {
@@ -98,9 +109,9 @@ export default function App() {
 
   return (
     <main>
-      <div className='start--container'>
-        {!start && <Start className="start" start={startApp} inputValue={inputValue} handleInputChange={handleInputChange} />}
-      </div>
+      {!start && <div className='start--container'>
+        <Start className="start" start={startApp} inputValue={inputValue} handleInputChange={handleInputChange} />
+      </div>}
       {start && !cityCard && data &&
         <div className='menu--container'>
           {cityCardArray}
