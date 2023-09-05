@@ -4,7 +4,7 @@ import Start from './components/Start.jsx'
 import Card from './components/Card.jsx'
 import City from './components/City.jsx'
 import { TrashFill } from 'react-bootstrap-icons';
-import {nanoid} from "nanoid"
+import { nanoid } from "nanoid"
 
 
 
@@ -15,10 +15,10 @@ export default function App() {
   const [inputValue, setInputValue] = React.useState('');
   const [selectedCity, setSelectedCity] = React.useState(0)
 
-React.useEffect(() => {
+  React.useEffect(() => {
     if (data.length > 0) {
       setStart(true);
-    }else {
+    } else {
       setStart(false)
     }
   }, [data]);
@@ -29,19 +29,33 @@ React.useEffect(() => {
       .then(response => response.json())
       .then((newData) => {
         newData.id = id;
+        newData.inputValue = zip
         setData(prevData => [...prevData, newData])
       })
       .catch(error => console.error(error));
   };
+
+  /*Does this bit of code uddate the state?
+   React.useEffect(() => {
+   if (inputValue){
+      fetchData(inputValue);
+    }}, []);
+  */
 
   React.useEffect(() => {
     localStorage.setItem('data', JSON.stringify(data))
   }, [data])
 
 
-  function startApp() {
-    setStart(prev => !prev)
-    fetchData(inputValue)
+  function startApp(event) {
+    if (!inputValue) {
+      alert('please enter a zipcode');
+      event.preventDefault();
+    } else {
+      setStart(prev => !prev)
+      fetchData(inputValue)
+    }
+    setInputValue('')
   }
 
   function selectCityCard(index) {
@@ -54,37 +68,39 @@ React.useEffect(() => {
 
   }
 
-  function addAnotherCity(){
+  function addAnotherCity() {
     fetchData(inputValue)
   }
-  
-  function deleteCard(event, id){
+
+  function deleteCard(event, id) {
     event.stopPropagation();
     setData(oldData => oldData.filter(card => card.id !== id))
   }
 
-  
-  
+
+
 
   let cityCardArray = data.map((city, index) => {
     return (
       <Card
-            cityName={city.location.name}
-            cityTemp={city.current.temp_f}
-            cityCondition={city.current.condition.text}
-            key={index}
-            id={city.id}
-            city={() => selectCityCard(index)}
-            delete={(event) => deleteCard(event, city.id)}
-            />
+        cityName={city.location.name}
+        cityTemp={city.current.temp_f}
+        cityCondition={city.current.condition.text}
+        key={index}
+        id={city.id}
+        inputValue={city.inputValue}
+        localTime={city.location.localtime}
+        city={() => selectCityCard(index)}
+        delete={(event) => deleteCard(event, city.id)}
+      />
     )
   })
-    
+
   return (
     <main>
       <div className='start--container'>
-      {!start && <Start className="start" start={startApp} inputValue={inputValue} handleInputChange={handleInputChange} />}
-        </div>
+        {!start && <Start className="start" start={startApp} inputValue={inputValue} handleInputChange={handleInputChange} />}
+      </div>
       {start && !cityCard && data &&
         <div className='menu--container'>
           {cityCardArray}
@@ -96,8 +112,8 @@ React.useEffect(() => {
       }
       {cityCard && <City
         goBack={selectCityCard}
-        cityName={data[selectedCity].location.name} 
-                     />}
+        cityName={data[selectedCity].location.name}
+      />}
     </main>
   )
 }
