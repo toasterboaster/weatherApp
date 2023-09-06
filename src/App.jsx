@@ -22,7 +22,7 @@ export default function App() {
       setStart(false)
     }
   }, [data]);
-
+/*
   const fetchData = (zip) => {
     const id = nanoid();
     fetch(`https://api.weatherapi.com/v1/current.json?key=c50302f0df1c4366907192905232408&q=${zip}`)
@@ -34,7 +34,29 @@ export default function App() {
       })
       .catch(error => console.error(error));
   };
-
+*/
+const fetchData = (zip) => {
+    const id = nanoid();
+    fetch(`https://api.weatherapi.com/v1/current.json?key=c50302f0df1c4366907192905232408&q=${zip}`)
+      .then(response => response.json())
+      .then((newData) => {
+        newData.id = id;
+        newData.inputValue = zip
+        setData(prevData => {
+          const index = prevData.findIndex(item => item.inputValue === newData.inputValue);
+        if (index !== -1) {
+          // If they are equal, overwrite prevData with newData
+          prevData[index] = newData;
+        } else {
+          // If they are not equal, add newData to prevData
+          prevData.push(newData);
+        }
+        return [...prevData];
+      });
+      })
+      .catch(error => console.error(error));
+  };
+  
   
   //Does this bit of code uddate the state?
   /*
@@ -87,10 +109,43 @@ export default function App() {
     event.stopPropagation();
     setData(oldData => oldData.filter(card => card.id !== id))
   }
+/*
+//reload data from api
+  React.useEffect(() => {
+    const handleBeforeUnload = () => {
+      // Make the API call before page reload
+      getData();
+      console.log("API call before page reload");
+    };
 
+    const handleUnload = () => {
+      // Make the API call after page reload
+      getData();
+      console.log("API call after page reload");
+    };
 
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    window.addEventListener("unload", handleUnload);
 
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+      window.removeEventListener("unload", handleUnload);
+    };
+  }, []);
 
+const getData = async (zip) => {
+    // Your API call logic here
+    try {
+      const response = await fetch(`https://api.weatherapi.com/v1/current.json?key=c50302f0df1c4366907192905232408&q=${zip}`);
+      const data = await response.json();
+      // Handle the response data
+    } catch (error) {
+      console.error(error);
+    }
+  };
+*/
+
+  
   let cityCardArray = data.map((city, index) => {
     return (
       <Card
@@ -103,6 +158,7 @@ export default function App() {
         localTime={city.location.localtime}
         city={() => selectCityCard(index)}
         delete={(event) => deleteCard(event, city.id)}
+        reload={() => fetchData(city.inputValue)}
       />
     )
   })
