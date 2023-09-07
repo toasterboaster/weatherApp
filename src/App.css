@@ -2,6 +2,7 @@ main {
   text-align: center;
   vertical-align: center;
   position: relative;
+  height: 100vh;
 }
 
 .start--container {
@@ -20,6 +21,11 @@ main {
   border: 2px solid black;
   margin: 50% 25%;
   border-radius: 25px;
+}
+
+.city--detail--container {
+  height: 100vh;
+  position: relative;
 }
 
 .detail--container {
