@@ -16,8 +16,6 @@ export default function Card(props) {
         <h4>{props.cityTemp}</h4>
         <h4>{props.cityCondition}</h4>
         <h4>{props.localTime}</h4>
-        <h4>{props.id}</h4>
-        <h4>{props.inputValue}</h4>
         <button onClick={props.city}>More...</button>
       </div>
   )

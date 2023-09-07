@@ -19,6 +19,13 @@ main {
 .city--card--container {
   border: 2px solid black;
   margin: 50% 25%;
+  border-radius: 25px;
+}
+
+.detail--container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 10px;
 }
 
 .menu--container {
@@ -32,6 +39,7 @@ main {
 .menu--card {
   border: 2px solid blue;
   margin: 50% 25%;
+  border-radius: 25px;
 }
 
 .add-card {

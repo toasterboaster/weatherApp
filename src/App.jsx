@@ -109,44 +109,37 @@ const fetchData = (zip) => {
     event.stopPropagation();
     setData(oldData => oldData.filter(card => card.id !== id))
   }
-/*
+
 //reload data from api
-  React.useEffect(() => {
+  /*
+React.useEffect(() => {
     const handleBeforeUnload = () => {
-      // Make the API call before page reload
-      getData();
-      console.log("API call before page reload");
+      // Call the reload function here
+      reload();
+      //console.log(reloaded)
     };
 
-    const handleUnload = () => {
-      // Make the API call after page reload
-      getData();
-      console.log("API call after page reload");
-    };
-
-    window.addEventListener("beforeunload", handleBeforeUnload);
-    window.addEventListener("unload", handleUnload);
+    window.addEventListener('beforeunload', handleBeforeUnload);
 
     return () => {
-      window.removeEventListener("beforeunload", handleBeforeUnload);
-      window.removeEventListener("unload", handleUnload);
+      window.removeEventListener('beforeunload', handleBeforeUnload);
     };
   }, []);
 
-const getData = async (zip) => {
-    // Your API call logic here
-    try {
-      const response = await fetch(`https://api.weatherapi.com/v1/current.json?key=c50302f0df1c4366907192905232408&q=${zip}`);
-      const data = await response.json();
-      // Handle the response data
-    } catch (error) {
-      console.error(error);
-    }
+  const reload = () => {
+    // Implement your reload logic here
+    console.log('Page is reloading');
   };
 */
-
   
   let cityCardArray = data.map((city, index) => {
+    
+  React.useEffect(() => {
+      // Call your reload function here
+      console.log('reloaded')
+      fetchData(city.inputValue);
+    }, []);
+  
     return (
       <Card
         cityName={city.location.name}
@@ -180,6 +173,13 @@ const getData = async (zip) => {
       {cityCard && <City
         goBack={selectCityCard}
         cityName={data[selectedCity].location.name}
+        temperature={data[selectedCity].current.temp_f}
+        condition={data[selectedCity].current.condition.text}
+        wind={data[selectedCity].current.wind_mph}
+        windDirection={data[selectedCity].current.wind_dir}
+        pressure={data[selectedCity].current.pressure_in}
+        humidity={data[selectedCity].current.humidity}
+        feelsLike={data[selectedCity].current.feelslike_f}
       />}
     </main>
   )
