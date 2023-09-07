@@ -57,21 +57,14 @@ const fetchData = (zip) => {
       .catch(error => console.error(error));
   };
   
-  
-  //Does this bit of code uddate the state?
-  /*
-   React.useEffect(() => {
-   if (data.length > 0){
-   for (let i = 0; i < data.length; i++){
-      fetchData(data[i].inputValue);
-      }
-    }}, []);
-  */
-
   React.useEffect(() => {
     localStorage.setItem('data', JSON.stringify(data))
   }, [data])
 
+   React.useEffect(() => {
+    console.log('reloaded')
+    data.forEach(city => fetchData(city.inputValue));
+  }, [start, cityCard, selectedCity]);
 
   function startApp(event) {
     if (!inputValue) {
@@ -94,7 +87,7 @@ const fetchData = (zip) => {
 
   }
 
-  function addAnotherCity() {
+  function addAnotherCity(event) {
     if (!inputValue) {
       alert('please enter a zipcode');
       event.preventDefault();
@@ -109,37 +102,8 @@ const fetchData = (zip) => {
     event.stopPropagation();
     setData(oldData => oldData.filter(card => card.id !== id))
   }
-
-//reload data from api
-  /*
-React.useEffect(() => {
-    const handleBeforeUnload = () => {
-      // Call the reload function here
-      reload();
-      //console.log(reloaded)
-    };
-
-    window.addEventListener('beforeunload', handleBeforeUnload);
-
-    return () => {
-      window.removeEventListener('beforeunload', handleBeforeUnload);
-    };
-  }, []);
-
-  const reload = () => {
-    // Implement your reload logic here
-    console.log('Page is reloading');
-  };
-*/
   
   let cityCardArray = data.map((city, index) => {
-    
-  React.useEffect(() => {
-      // Call your reload function here
-      console.log('reloaded')
-      fetchData(city.inputValue);
-    }, []);
-  
     return (
       <Card
         cityName={city.location.name}
@@ -170,7 +134,9 @@ React.useEffect(() => {
           </div>
         </div>
       }
-      {cityCard && <City
+      {cityCard &&
+        <div className='city--detail--container'>
+        <City
         goBack={selectCityCard}
         cityName={data[selectedCity].location.name}
         temperature={data[selectedCity].current.temp_f}
@@ -180,7 +146,8 @@ React.useEffect(() => {
         pressure={data[selectedCity].current.pressure_in}
         humidity={data[selectedCity].current.humidity}
         feelsLike={data[selectedCity].current.feelslike_f}
-      />}
+      />
+      </div>}
     </main>
   )
 }
