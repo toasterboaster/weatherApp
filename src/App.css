@@ -53,6 +53,14 @@ main {
   
 }
 
+.add-city {
+border: 2px solid green;
+height: 275px;
+display: flex;
+justify-content: center;
+align-items: center;
+}
+
 .trashButton {
   cursor: pointer;
 }
