@@ -128,7 +128,7 @@ const fetchData = (zip) => {
       {start && !cityCard && data &&
         <div className='menu--container'>
           {cityCardArray}
-          <div className='menu--card'>
+          <div className='menu--card add-city'>
             <input placeholder="Enter city or zipcode" type="text" onChange={handleInputChange}></input>
             <button className='add--card' onClick={addAnotherCity}>+</button>
           </div>
