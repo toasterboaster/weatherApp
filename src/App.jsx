@@ -137,7 +137,6 @@ const fetchData = (zip) => {
         reload={() => fetchData(city.inputValue)}
         style={{backgroundImage: `url('${backgroundImage[city.current.condition.text.split(' ')[0]]}')`,
                backgroundSize: 'cover'}}
-        //style={{backgroundImage:`url('https://images.unsplash.com/photo-1499956827185-0d63ee78a910?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=870&q=80')`}}
       />
     )
   })
