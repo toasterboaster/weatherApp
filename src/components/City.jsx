@@ -2,7 +2,7 @@ import React from 'react'
 
 export default function City(props) {
   return (
-      <div className="city--card--container">
+      <div style={props.style} className="city--card--container">
         <button className="backButton" onClick={props.goBack}>Back</button>
       <h3>{props.cityName}</h3>
       

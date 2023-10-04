@@ -168,6 +168,8 @@ const fetchData = (zip) => {
         pressure={data[selectedCity].current.pressure_in}
         humidity={data[selectedCity].current.humidity}
         feelsLike={data[selectedCity].current.feelslike_f}
+        style={{backgroundImage: `url('${backgroundImage[data[selectedCity].current.condition.text.split(' ')[0]]}')`,
+               backgroundSize: 'cover'}}
       />
       </div>}
     </main>

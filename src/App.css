@@ -20,6 +20,8 @@ main {
   border: 2px solid black;
   margin: 0;
   border-radius: 25px;
+  color: white;
+  text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
 }
 
 .city--detail--container {
@@ -49,6 +51,7 @@ main {
   border-radius: 25px;
   color: white;
   text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+  position: relative;
 }
 
 .showInput {
@@ -70,4 +73,7 @@ align-items: center;
 
 .trashButton {
   cursor: pointer;
+  position: absolute;
+  top: 10px;
+  left: 10px;
 }
