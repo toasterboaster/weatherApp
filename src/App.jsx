@@ -15,6 +15,7 @@ export default function App() {
   const [inputValue, setInputValue] = React.useState('');
   const [selectedCity, setSelectedCity] = React.useState(0)
   const [showInput, setShowInput] = React.useState(false)
+  const [currentIndex, setCurrentIndex] = React.useState(0)
 
   React.useEffect(() => {
     if (data.length > 0) {
@@ -70,7 +71,13 @@ const fetchData = (zip) => {
     console.log('reloaded')
     data.forEach(city => fetchData(city.inputValue));
   }, [start, cityCard, selectedCity]);
-
+/*
+  React.useEffect(() => {
+  const next = (currentIndex + 1) % data.length;
+  const id = setTimeout(() => setCurrentIndex(next), 10000);
+  return () => clearTimeout(id);
+}, [currentIndex]);
+*/
   function startApp(event) {
     if (!inputValue) {
       alert('please enter a zipcode');
@@ -113,6 +120,23 @@ const fetchData = (zip) => {
     setShowInput(!showInput)
   }
 
+  function handleNext(){
+    setCurrentIndex((prevIndex) => {
+      return prevIndex + 1 === data.length ? 0 : prevIndex + 1
+      //return (prevIndex + 1) % data.length;
+    })
+  };
+
+  function handlePrevious(){
+    setCurrentIndex((prevIndex) => {
+      return prevIndex - 1 < 0 ? data.length - 1 : prevIndex - 1
+    })
+  };
+
+  function handleDotClick(index){
+    setCurrentIndex(index)
+  }
+
 //Styles
   let backgroundImage = {
     Overcast: 'https://images.unsplash.com/photo-1499956827185-0d63ee78a910?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=870&q=80',
@@ -148,7 +172,22 @@ const fetchData = (zip) => {
       </div>}
       {start && !cityCard && data &&
         <div className='menu--container'>
-          {cityCardArray}
+          <div className="carousel-wrapper">
+            <button className="left-arrow" onClick={handlePrevious}>
+              Lt
+            </button>
+            <div className='carousel-content-wrapper'>
+              <div className='carousel-content'>
+                  <div className='combined-content'>
+                {cityCardArray[currentIndex]}
+                {cityCardArray[currentIndex + 1]}
+                  </div>
+              </div>
+            </div>
+            <button className='right-arrow' onClick={handleNext}>
+              Rt
+            </button>
+          </div>
           <div className='add-city'>
             {showInput && <input placeholder="Enter city or zipcode" type="text" onChange={handleInputChange}></input>}
             {showInput && <button className='add--card' onClick={addAnotherCity}>go</button>}
